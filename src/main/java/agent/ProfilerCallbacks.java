@@ -21,11 +21,13 @@ public class ProfilerCallbacks {
                 .collect(Collectors.toList());
         ProfilerToken token = new ProfilerToken(new FunctionInfo(name, args));
         token.getProfile().setStartTime(System.nanoTime());
+        System.out.println("ENTER");
         return token;
     }
 
     public static void exitMethod(ProfilerToken token) {
         token.getProfile().setEndTime(System.nanoTime());
+        System.out.println("EXIT");
         profile.addTrace(token.getProfile());
     }
 
@@ -33,6 +35,7 @@ public class ProfilerCallbacks {
             ProfilerToken token,
             String name,
             String descriptor) {
+        System.out.println("BEFORE_CALL " + name);
         token.setTimestamp(System.nanoTime());
     }
 
@@ -43,6 +46,7 @@ public class ProfilerCallbacks {
         long prevTimeStamp = token.getTimestamp();
         long curTimeStamp = System.nanoTime();
         long duration = curTimeStamp - prevTimeStamp;
+        System.out.println("AFTER_CALL " + name);
         token.getProfile().addCall(name, descriptor, duration);
     }
 
