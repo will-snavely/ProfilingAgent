@@ -118,17 +118,5 @@ public class AgentMain {
             return;
         }
         instrumentation.addTransformer(new Transformer());
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            try {
-                ObjectMapper objectMapper = new ObjectMapper();
-                String workingDir = Config().getWorkingDir();
-                Path path = Paths.get(workingDir, "trace.json");
-                objectMapper.writeValue(
-                        new FileOutputStream(path.toFile()),
-                        ProfilerCallbacks.getProfile());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }));
     }
 }
