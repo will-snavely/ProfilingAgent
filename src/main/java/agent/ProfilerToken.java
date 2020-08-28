@@ -6,10 +6,12 @@ import model.profile.MethodProfile;
 public class ProfilerToken {
     private long timestamp;
     private MethodProfile profile;
+    private String workingDirectory;
 
-    public ProfilerToken(FunctionInfo info) {
+    public ProfilerToken(FunctionInfo info, String workingDirectory) {
         this.profile = new MethodProfile();
         this.profile.setFunction(info);
+        this.workingDirectory = workingDirectory;
     }
 
     public long getTimestamp() {
@@ -23,4 +25,6 @@ public class ProfilerToken {
     public MethodProfile getProfile() {
         return this.profile;
     }
+
+    public String getWorkingDirectory() { return this.workingDirectory; }
 }

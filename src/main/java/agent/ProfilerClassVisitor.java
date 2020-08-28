@@ -35,7 +35,7 @@ public class ProfilerClassVisitor extends ClassVisitor {
             return mv;
         }
         if (this.config.methodMatches(this.className, name)) {
-            mv = new ProfilerMethodVisitor(mv, access, name, desc);
+            mv = new ProfilerMethodVisitor(mv, access, name, desc, config);
         }
         return mv;
     }

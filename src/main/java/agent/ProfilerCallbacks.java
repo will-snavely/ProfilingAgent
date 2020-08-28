@@ -17,26 +17,32 @@ import java.util.stream.Collectors;
 public class ProfilerCallbacks {
     private static AtomicLongMap<String> functionCounter = AtomicLongMap.create();
 
-    public static ProfilerToken enterMethod(String name, String descriptor) {
+    public static ProfilerToken enterMethod(
+            String name,
+            String descriptor,
+            String workingDirectory) {
         List<String> args = Arrays.stream(Type.getArgumentTypes(descriptor))
                 .map(Type::getDescriptor)
                 .collect(Collectors.toList());
-        ProfilerToken token = new ProfilerToken(new FunctionInfo(name, args));
+        ProfilerToken token = new ProfilerToken(
+                new FunctionInfo(name, args),
+                workingDirectory);
         token.getProfile().setStartTime(System.nanoTime());
         return token;
     }
 
     public static void exitMethod(ProfilerToken token) {
         token.getProfile().setEndTime(System.nanoTime());
-        dumpProfile(token.getProfile());
+        dumpProfile(token.getProfile(), token.getWorkingDirectory());
     }
 
-    private static void dumpProfile(MethodProfile profile) {
+    private static void dumpProfile(MethodProfile profile, String workingDirectory) {
         FileOutputStream out = null;
-        String workingDir = AgentMain.Config().getWorkingDir();
         String functionName = profile.getFunction().getName();
         Long counter = functionCounter.getAndIncrement(functionName);
-        Path path = Paths.get(workingDir, String.format("%s_%d.json", functionName, counter));
+        Path path = Paths.get(
+                workingDirectory,
+                String.format("%s_%d.json", functionName, counter));
 
         try {
             out = new FileOutputStream(path.toFile());

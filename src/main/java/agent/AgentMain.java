@@ -6,12 +6,9 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.Instrumentation;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.ProtectionDomain;
 import java.util.HashSet;
 import java.util.Set;
@@ -48,6 +45,12 @@ public class AgentMain {
     }
 
     static class Transformer implements ClassFileTransformer {
+        private Configuration config;
+
+        public Transformer(Configuration config) {
+            this.config = config;
+        }
+
         private byte[] transformImpl(ClassLoader loader,
                                      String className,
                                      Class<?> classBeingRedefined,
@@ -61,17 +64,17 @@ public class AgentMain {
                 return classfileBuffer;
             }
 
-            switch (Config.getMode()) {
+            switch (config.getMode()) {
                 case "dumpNames":
                     reader = new ClassReader(classfileBuffer);
                     writer = new ClassWriter(reader, ClassWriter.COMPUTE_MAXS);
-                    DumpClassVisitor pv = new DumpClassVisitor(writer, Config);
+                    DumpClassVisitor pv = new DumpClassVisitor(writer, config);
                     reader.accept(pv, 0);
                     return writer.toByteArray();
                 case "trace":
                     reader = new ClassReader(classfileBuffer);
                     writer = new ClassWriter(reader, ClassWriter.COMPUTE_MAXS);
-                    ProfilerClassVisitor tv = new ProfilerClassVisitor(writer, Config);
+                    ProfilerClassVisitor tv = new ProfilerClassVisitor(writer, config);
                     reader.accept(tv, ClassReader.EXPAND_FRAMES);
                     return writer.toByteArray();
                 default:
@@ -88,7 +91,7 @@ public class AgentMain {
                 ProtectionDomain protectionDomain,
                 byte[] classfileBuffer) {
             try {
-                if (Config.classMatches(className)) {
+                if (config.classMatches(className)) {
                     return transformImpl(
                             loader,
                             className,
@@ -110,13 +113,12 @@ public class AgentMain {
 
     public static void premain(String arguments, Instrumentation instrumentation) {
         try {
-            Config = loadConfig(arguments);
+            Configuration config = loadConfig(arguments);
+            instrumentation.addTransformer(new Transformer(config));
         } catch (IOException e) {
             System.err.println("Failed to load config file from: " + arguments);
             System.err.println("Exception:");
             e.printStackTrace();
-            return;
         }
-        instrumentation.addTransformer(new Transformer());
     }
 }

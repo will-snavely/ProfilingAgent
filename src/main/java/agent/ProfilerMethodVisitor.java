@@ -1,5 +1,6 @@
 package agent;
 
+import model.config.Configuration;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
@@ -36,15 +37,18 @@ public class ProfilerMethodVisitor extends AdviceAdapter {
     private String name;
     private String descriptor;
     private int localId;
+    private Configuration config;
 
     public ProfilerMethodVisitor(
             MethodVisitor mv,
             int access,
             String name,
-            String descriptor) {
+            String descriptor,
+            Configuration config) {
         super(Opcodes.ASM8, mv, access, name, descriptor);
         this.descriptor = descriptor;
         this.name = name;
+        this.config = config;
     }
 
     @Override
@@ -53,6 +57,7 @@ public class ProfilerMethodVisitor extends AdviceAdapter {
         this.localId = this.newLocal(Type.getType(ProfilerToken.class));
         mv.visitLdcInsn(this.name);
         mv.visitLdcInsn(this.descriptor);
+        mv.visitLdcInsn(config.getWorkingDir());
         mv.visitMethodInsn(
                 Opcodes.INVOKESTATIC,
                 Type.getType(ProfilerCallbacks.class).getInternalName(),
