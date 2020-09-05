@@ -55,7 +55,8 @@
                             </addDefaultSpecificationEntries>
                         </manifest>
                         <manifestEntries>
-                            <Premain-Class>org.barnhorse.agent.AgentMain</Premain-Class>
+                            <Premain-Class>org.barnhorse.agent.AgentMain
+                            </Premain-Class>
                         </manifestEntries>
                     </archive>
                 </configuration>
