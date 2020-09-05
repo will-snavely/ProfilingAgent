@@ -1,4 +1,4 @@
-package model.profile;
+package org.barnhorse.runtimelib.model.profile;
 
 public class RuntimeValue {
     private String type;

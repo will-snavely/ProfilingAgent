@@ -1,6 +1,6 @@
-package agent;
+package org.barnhorse.agent;
 
-import model.config.Configuration;
+import org.barnhorse.agent.config.Configuration;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;

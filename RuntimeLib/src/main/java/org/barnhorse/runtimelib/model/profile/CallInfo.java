@@ -1,6 +1,4 @@
-package model.profile;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+package org.barnhorse.runtimelib.model.profile;
 
 public class CallInfo {
     private long callCount;

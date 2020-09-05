@@ -1,6 +1,9 @@
-package agent;
+package org.barnhorse.agent;
 
-import model.config.Configuration;
+import org.barnhorse.runtimelib.ProfilerCallbacks;
+import org.barnhorse.runtimelib.ProfilerToken;
+import org.barnhorse.agent.config.Configuration;
+
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;

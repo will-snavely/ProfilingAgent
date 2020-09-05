@@ -1,4 +1,4 @@
-package model.profile;
+package org.barnhorse.runtimelib.model.profile;
 
 import java.util.ArrayList;
 import java.util.List;

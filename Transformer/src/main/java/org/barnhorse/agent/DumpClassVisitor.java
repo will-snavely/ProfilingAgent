@@ -1,6 +1,6 @@
-package agent;
+package org.barnhorse.agent;
 
-import model.config.Configuration;
+import org.barnhorse.agent.config.Configuration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
@@ -12,12 +12,12 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 
 public class DumpClassVisitor extends ClassVisitor {
-    private model.dump.Class classInfo;
+    private org.barnhorse.runtimelib.model.dump.Class classInfo;
     private Configuration config;
 
     public DumpClassVisitor(ClassVisitor cv, Configuration config) {
         super(Opcodes.ASM8, cv);
-        this.classInfo = new model.dump.Class();
+        this.classInfo = new org.barnhorse.runtimelib.model.dump.Class();
         this.config = config;
     }
 
@@ -61,7 +61,7 @@ public class DumpClassVisitor extends ClassVisitor {
             String signature,
             String[] exceptions) {
         if (this.config.methodMatches(this.classInfo.getName(), name)) {
-            model.dump.Method method = new model.dump.Method();
+            org.barnhorse.runtimelib.model.dump.Method method = new org.barnhorse.runtimelib.model.dump.Method();
             method.setAccess(access);
             method.setDesc(desc);
             method.setName(name);

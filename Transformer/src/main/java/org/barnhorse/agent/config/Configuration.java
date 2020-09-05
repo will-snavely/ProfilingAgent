@@ -1,4 +1,4 @@
-package model.config;
+package org.barnhorse.agent.config;
 
 import java.util.ArrayList;
 import java.util.List;

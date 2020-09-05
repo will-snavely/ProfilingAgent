@@ -1,6 +1,4 @@
-package model.profile;
-
-import model.dump.Method;
+package org.barnhorse.runtimelib.model.profile;
 
 import java.util.ArrayList;
 import java.util.List;

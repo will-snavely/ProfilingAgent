@@ -1,4 +1,4 @@
-package model.config;
+package org.barnhorse.agent.config;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
