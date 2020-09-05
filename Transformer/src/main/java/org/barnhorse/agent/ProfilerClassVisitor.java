@@ -17,7 +17,7 @@ public class ProfilerClassVisitor extends ClassVisitor {
 
     @Override
     public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
-        System.out.println("Class: " + name);
+        System.err.println("Visiting Class: " + name);
         super.visit(version, access, name, signature, superName, interfaces);
         this.className = name;
     }
@@ -30,11 +30,11 @@ public class ProfilerClassVisitor extends ClassVisitor {
             String signature,
             String[] exceptions) {
         MethodVisitor mv = super.visitMethod(access, name, desc, signature, exceptions);
-        System.out.println("\tMethod: " + name + desc);
         if (name.contains("<init>")) {
             return mv;
         }
         if (this.config.methodMatches(this.className, name)) {
+            System.err.println("Visiting Method: " + name);
             mv = new ProfilerMethodVisitor(mv, access, name, desc, config);
         }
         return mv;
